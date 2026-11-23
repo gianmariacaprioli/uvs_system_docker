@@ -3,7 +3,7 @@
 set -e
 
 CONTAINER_NAME="uvs_system"
-IMAGE_NAME="usv_system_docker:v3"
+IMAGE_NAME="usv_system:v3"
 
 HOST_VESSEL_WS="${HOME}/vessel_ws"
 CONTAINER_VESSEL_WS="/root/vessel_ws"
@@ -12,10 +12,10 @@ CONTAINER_VESSEL_WS="/root/vessel_ws"
 mkdir -p "${HOST_VESSEL_WS}"
 
 # Allow Docker containers to access the host X server
-if command -v xhost >/dev/null 2>&1; then
-    xhost +local:docker >/dev/null 2>&1 || true
+if [ -z "${DISPLAY:-}" ]; then
+    echo "Run the script in the host's terminal" >&2
+    exit 1
 fi
-
 
 # =========================================================
 # If the container already exists
